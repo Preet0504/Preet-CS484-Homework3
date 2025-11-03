@@ -11,7 +11,7 @@ const TotalPage: React.FC = () => {
     (async () => {
       try {
         //TODO: Fetch the expenses
-        const list = [];
+        const list = await fetchExpenses() as Expense[];
         setExpenses(list);
       } catch (e) {
         console.error("Failed to fetch expenses:", e);
@@ -22,7 +22,9 @@ const TotalPage: React.FC = () => {
 
   const computeTotal = (expenses: Expense[]) => {
     //TODO: Compute the total cost of all expenses
-    return 0;
+    return expenses
+      .filter((e) => !e.deleted) // Only include non-deleted expenses
+      .reduce((sum, expense) => sum + Number(expense.cost), 0);
   };
 
   return (

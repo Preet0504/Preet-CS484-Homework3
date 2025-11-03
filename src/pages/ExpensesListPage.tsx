@@ -92,17 +92,17 @@ const ExpensesListPage: React.FC = () => {
   };
 
   //TODO: Change the sorting logic to implement useMemo
-  const sortedExpenses = [...expenses].sort((a, b) => {
-    //TODO: Have the sorting logic here for date(default when you land on the page) and cost, asc and desc.
-    //TODO: use the helper function `toTime`
+  const sortedExpenses = useMemo(() => {
+  return [...expenses].sort((a, b) => {
     let cmp = 0;
     if (sortBy === "date") {
-      //TODO: Add logic
-    } else {
-      //TODO: Add logic
+      cmp = toTime(a.date) - toTime(b.date);
+    } else if (sortBy === "cost") {
+      cmp = Number(a.cost) - Number(b.cost);
     }
     return sortDir === "asc" ? cmp : -cmp;
   });
+}, [expenses, sortBy, sortDir]);
 
   const toggleDir = () => setSortDir((d) => (d === "asc" ? "desc" : "asc"));
 
@@ -207,6 +207,11 @@ const ExpensesListPage: React.FC = () => {
         style={{ height: LIST_HEIGHT }}
       >
         {/* TODO: Implement the Empty List fallback using  <div className="no-expenses" data-testid="empty-state"> */}
+        {sortedExpenses.length === 0 ? (
+          <div className="no-expenses" data-testid="empty-state">
+            No expenses found
+          </div>
+        ) : (
         <List
           rowComponent={ExpensesRowComponent}
           rowCount={sortedExpenses.length}
@@ -221,8 +226,8 @@ const ExpensesListPage: React.FC = () => {
             onDelete: deleteExpense,
           }}
         />
+      )}
       </div>
-
       <dialog
         ref={dialogRef}
         className="modal"

@@ -3,6 +3,9 @@ export type Expense = {
   description: string;
   date: string;
   cost: number | string;
+  deleted?: boolean;
+  createdAt?: any;
+  updatedAt?: any;
 };
 
 export type TempEdit = { description: string; date: string; cost: string };

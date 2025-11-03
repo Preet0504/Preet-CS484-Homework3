@@ -19,7 +19,7 @@ const SignIn: React.FC<Props> = ({ redirectTo = "/" }) => {
       setErr("Please enter your email and password.");
       return;
     }
-
+    
     setLoading(true);
     try {
       const result = await signIn(email, password);
@@ -30,6 +30,7 @@ const SignIn: React.FC<Props> = ({ redirectTo = "/" }) => {
       }
 
       //TODO: Redirect to the expense list on successful sign in
+      window.location.assign(redirectTo);
     } catch (e: any) {
       const msg =
         friendlyFirebaseError(e?.code) ||
